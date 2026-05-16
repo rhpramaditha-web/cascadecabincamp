@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cascade Cabin & Camp — Glamping premium di Pangalengan, Bandung. Nikmati alam pegunungan dengan fasilitas lengkap.">
+<!-- Open Graph / WhatsApp Preview -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cascade-cabin.id/"> <!-- Ganti dengan domain asli Anda nanti -->
+<meta property="og:title" content="Cascade Cabin & Camp — Glamping Pangalengan">
+<meta property="og:description" content="Glamping premium di Pangalengan, Bandung. Nikmati alam pegunungan dengan fasilitas lengkap.">
+<meta property="og:image" content="https://cascade-cabin.id/assets/images/image1.png"> <!-- Ganti dengan URL absolut gambar andalan Anda -->
+<title>Cascade Cabin &amp; Camp — Glamping Pangalengan</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* Page-specific styles only — shared styles are in assets/css/style.css */
+
+/* ── HERO ── */
+.hero {
+  min-height: 92vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 80px 5vw;
+  gap: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  right: -120px; top: -80px;
+  width: 560px; height: 560px;
+  border-radius: 50%;
+  background: var(--cream-dark);
+}
+.hero-text { position: relative; z-index: 1; }
+.hero h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); color: var(--earth); margin: 1rem 0 1.4rem; }
+.hero h1 em { color: var(--moss); font-style: italic; }
+.hero-stats { display: flex; gap: 32px; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(139,96,64,0.18); }
+.hero-visual { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 12px; }
+.hero-img-main { width: 100%; aspect-ratio: 4/3; background: var(--cream-dark); border-radius: 20px; overflow: hidden; position: relative; }
+.hero-img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hero-img-sm { aspect-ratio: 1; background: var(--cream-dark); border-radius: 14px; overflow: hidden; }
+.hero-badge { position: absolute; bottom: 20px; left: 20px; background: var(--white); border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; font-size: 13px; box-shadow: 0 2px 16px rgba(46,36,24,0.12); }
+.badge-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--moss-light); flex-shrink: 0; }
+
+/* ── ROOMS ── */
+.rooms { background: var(--cream); }
+.rooms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.room-img { aspect-ratio: 4/3; background: var(--cream-dark); position: relative; overflow: hidden; }
+.room-tag { position: absolute; top: 14px; left: 14px; background: var(--white); color: var(--moss-dark); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; padding: 4px 12px; border-radius: var(--radius-pill); text-transform: uppercase; }
+.room-body { padding: 22px; }
+.room-body h3 { font-size: 20px; color: var(--earth); margin-bottom: 6px; }
+.room-body p { font-size: 13px; color: var(--text-soft); margin-bottom: 14px; line-height: 1.6; }
+.room-amenities { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.room-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid rgba(139,96,64,0.1); }
+.room-price { font-size: 13px; color: var(--text-muted); }
+.room-price strong { font-size: 20px; color: var(--earth); font-family: var(--font-display); font-weight: 400; }
+
+/* ── ACTIVITIES ── */
+.activities { background: var(--earth); }
+.activities .section-label { color: var(--moss-light); }
+.activities .section-label::before { background: var(--moss-light); }
+.activities .section-title { color: var(--cream); }
+.activities .section-desc { color: rgba(245,240,232,0.6); }
+.act-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin-top: 3rem; }
+.act-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(245,240,232,0.1); border-radius: 18px; padding: 26px 22px; transition: background .2s; }
+.act-card:hover { background: rgba(255,255,255,0.09); }
+.act-icon { width: 48px; height: 48px; background: rgba(78,112,56,0.35); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.act-card h4 { font-family: var(--font-body); font-size: 15px; font-weight: 500; color: var(--cream); margin-bottom: 6px; }
+.act-card p { font-size: 13px; color: rgba(245,240,232,0.6); line-height: 1.6; }
+
+/* ── TESTIMONIALS ── */
+.testimonials { background: var(--white); }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 3rem; }
+.testi-card { background: var(--cream); border-radius: 18px; padding: 26px 24px; }
+.testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+.star { width: 14px; height: 14px; background: var(--bark-light); clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
+.testi-text { font-size: 14px; color: var(--text-soft); line-height: 1.7; margin-bottom: 20px; font-style: italic; font-family: var(--font-display); }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 15px; color: var(--bark-dark); }
+.testi-name { font-size: 14px; font-weight: 500; color: var(--earth); }
+.testi-from { font-size: 12px; color: var(--text-muted); }
+
+/* ── PRICING ── */
+.pricing { background: var(--cream-dark); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 3rem; }
+.price-card { background: var(--white); border-radius: 22px; padding: 32px 28px; border: 1.5px solid rgba(139,96,64,0.12); position: relative; }
+.price-card.featured { background: var(--moss-dark); border-color: transparent; }
+.price-card.featured .price-name  { color: var(--cream); }
+.price-card.featured .price-desc  { color: rgba(245,240,232,0.65); }
+.price-card.featured .price-num   { color: var(--cream); }
+.price-card.featured .price-per   { color: rgba(245,240,232,0.65); }
+.price-card.featured .price-list li { color: rgba(245,240,232,0.8); }
+.price-card.featured .price-list li::before { color: var(--moss-light); }
+.price-card.featured .price-divider { background: rgba(245,240,232,0.12); }
+.price-card.featured .price-btn { background: var(--cream); color: var(--moss-dark); }
+.price-card.featured .price-btn:hover { background: var(--cream-dark); }
+.price-pop-label { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--moss-light); color: var(--moss-dark); font-size: 11px; font-weight: 500; padding: 4px 16px; border-radius: 99px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+.price-name { font-size: 13px; font-weight: 500; color: var(--bark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.price-desc { font-size: 13px; color: var(--text-soft); margin-bottom: 1.5rem; }
+.price-num  { font-family: var(--font-display); font-size: 36px; color: var(--earth); font-weight: 400; line-height: 1; }
+.price-per  { font-size: 13px; color: var(--text-muted); }
+.price-divider { height: 1px; background: rgba(139,96,64,0.12); margin: 1.2rem 0; }
+.price-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.8rem; }
+.price-list li { font-size: 13px; color: var(--text-soft); display: flex; align-items: flex-start; gap: 8px; }
+.price-list li::before { content: '✓'; color: var(--moss); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.price-btn { display: block; text-align: center; background: var(--moss); color: var(--cream); padding: 12px 24px; border-radius: var(--radius-pill); font-size: 14px; font-weight: 500; transition: background var(--transition); }
+.price-btn:hover { background: var(--moss-dark); color: var(--cream); }
+
+/* ── FAQ ── */
+.faq { background: var(--cream); }
+.faq-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+.faq-list { display: flex; flex-direction: column; }
+.faq-item { border-bottom: 1px solid rgba(139,96,64,0.15); }
+.faq-q { width: 100%; background: none; border: none; text-align: left; padding: 18px 0; font-family: var(--font-body); font-size: 15px; font-weight: 500; color: var(--earth); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: color var(--transition); }
+.faq-q:hover { color: var(--moss); }
+.faq-arrow { width: 22px; height: 22px; border-radius: 50%; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.25s, background 0.2s; }
+.faq-item.open .faq-arrow { transform: rotate(180deg); background: var(--moss); }
+.faq-item.open .faq-arrow svg path { stroke: var(--cream); }
+.faq-a { font-size: 14px; color: var(--text-soft); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding-bottom 0.3s; }
+.faq-item.open .faq-a { max-height: 200px; padding-bottom: 16px; }
+.faq-cta-box { background: var(--moss-dark); border-radius: 22px; padding: 40px 32px; color: var(--cream); text-align: center; position: sticky; top: 80px; }
+.faq-cta-box h3 { font-size: 24px; color: var(--cream); margin-bottom: 12px; }
+.faq-cta-box p { font-size: 14px; color: rgba(245,240,232,0.7); margin-bottom: 2rem; line-height: 1.7; }
+.faq-cta-note { font-size: 12px; color: rgba(245,240,232,0.45); margin-top: 14px; }
+
+/* ── CTA BOOKING ── */
+.cta-booking { background: var(--moss-dark); padding: 80px 5vw; text-align: center; }
+.cta-booking h2 { font-size: 2.2rem; color: var(--cream); margin-bottom: 12px; }
+.cta-booking p { font-size: 15px; color: rgba(245,240,232,0.65); margin-bottom: 2rem; }
+
+/* ── LOCATION ── */
+.location { background: var(--earth); }
+.location .section-label { color: var(--moss-light); }
+.location .section-label::before { background: var(--moss-light); }
+.location .section-title { color: var(--cream); }
+.location .section-desc { color: rgba(245,240,232,0.6); }
+.loc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 2.5rem; }
+.loc-facts { display: flex; flex-direction: column; gap: 16px; }
+.loc-fact { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: rgba(255,255,255,0.06); border-radius: 14px; border: 1px solid rgba(245,240,232,0.1); }
+.loc-fact-icon { width: 40px; height: 40px; background: rgba(78,112,56,0.3); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.loc-fact h5 { font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--cream); margin-bottom: 2px; }
+.loc-fact p { font-size: 13px; color: rgba(245,240,232,0.6); }
+.loc-map { aspect-ratio: 1; background: rgba(255,255,255,0.06); border-radius: 20px; border: 1px solid rgba(245,240,232,0.1); display: flex; align-items: center; justify-content: center; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-visual, .hero::before { display: none; }
+  .rooms-grid, .testi-grid, .pricing-grid { grid-template-columns: 1fr; }
+  .act-grid { grid-template-columns: 1fr 1fr; }
+  .loc-grid, .faq-layout { grid-template-columns: 1fr; }
+  .faq-cta-box { position: static; }
+}
+@media (max-width: 600px) { .act-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+	<a href="index.html" class="logo">
+  <img src="assets/img/logoHitam.png" alt="Cascade Cabin & Camp" style="height: 70px; width: auto; object-fit: fill;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#kamar">Kamar</a></li>
+    <li><a href="#aktivitas">Aktivitas</a></li>
+    <li><a href="#paket">Paket Tambahan</a></li>
+	<li><a href="fasilitas">Fasilitas</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#lokasi">Lokasi</a></li>
+  </ul>
+  <a href="booking.html" class="nav-cta">Reservasi</a>
+  <div class="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-mobile">
+  <a href="#kamar">Kamar</a>
+  <a href="#aktivitas">Aktivitas</a>
+  <a href="#paket">Paket Tambahan</a>
+  <a href="#fasilits">Fasilitas</a>
+  <a href="#faq">FAQ</a>
+  <a href="#lokasi">Lokasi</a>
+  <a href="booking.html" class="btn btn-primary" style="margin-top:8px;">Reservasi sekarang</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text" data-fade>
+    <div class="eyebrow">Pangalengan, Bandung · 1.400 mdpl</div>
+    <h1>Bernafas<br>bersama <em>alam</em><br>pegunungan</h1>
+    <p class="text-soft" style="max-width:420px;margin-bottom:2rem;">Glamping autentik di jantung Bandung Selatan. Ketenangan hutan pinus, udara bersih, gemercik air sungai dan bintang malam yang tak tertandingi.</p>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+      <a href="booking.html" class="btn btn-primary">Reservasi sekarang</a>
+      <a href="#kamar" class="btn btn-secondary">Lihat kamar →</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">200+</div><div class="stat-label">Tamu puas</div></div>
+      <div><div class="stat-num">4.8</div><div class="stat-label">Rating Google</div></div>
+      <div><div class="stat-num">4</div><div class="stat-label">Tipe kamar</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-main">
+      <img src="assets/images/image1.png" alt="Cascade Cabin" class="hero-img">
+      </img>
+      <div class="hero-badge">
+        <div class="badge-dot"></div>
+        <div>
+          <div style="font-weight:500;font-size:13px;color:var(--earth)">Tersedia minggu ini</div>
+          <div style="font-size:11px;color:var(--text-muted)">Cek ketersediaan →</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-img-row">
+      <div class="hero-img-sm" style="background:#1a2a10;"></div>
+      <div class="hero-img-sm" style="background:#e8dcc8;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROOMS -->
+<section class="section rooms" id="kamar">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;">
+    <div>
+      <div class="section-label">Akomodasi</div>
+      <h2 class="section-title">Pilih sesuai keinginanmu</h2>
+    </div>
+    <a href="booking.html" class="btn btn-secondary">Lihat semua →</a>
+  </div>
+  <div class="rooms-grid">
+    <div class="card" data-fade>
+      <div class="room-img" style="background:#c8d8a8;"><div class="room-tag">Cozy</div></div>
+      <div class="room-body">
+        <h3>Forest Tent</h3>
+        <p>Tenda nyaman untuk 4 orang, dengan pemandangan hutan pinus.</p>
+        <div class="room-amenities">
+          <span class="amenity">4 orang</span><span class="amenity">4 single bed</span>
+          <span class="amenity">Kamar mandi terpisah</span><span class="amenity">Sarapan</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price"><strong>300.000</strong> / malam (starts from)</div>
+          <a href="booking.html" class="btn btn-primary" style="padding:8px 18px;font-size:13px;">Pesan</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" data-fade>
+      <div class="room-img" style="background:#1a2a10;"><div class="room-tag" style="background:var(--moss-dark);color:var(--moss-light);">Favorit</div></div>
+      <div class="room-body">
+        <h3>Riverside Glamping</h3>
+        <p>Tenda glamping premium dengan pemandangan langsung ke arah sungai.</p>
+        <div class="room-amenities">
+          <span class="amenity">4 orang</span><span class="amenity">1 Queen bed + 2 single bed</span>
+          <span class="amenity">Kamar mandi dalam</span><span class="amenity">Sarapan</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price"><strong>750.000</strong> / malam (starts from)</div>
+          <a href="booking.html" class="btn btn-primary" style="padding:8px 18px;font-size:13px;">Pesan</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" data-fade>
+      <div class="room-img" style="background:#e8dcc8;"><div class="room-tag"></div></div>
+      <div class="room-body">
+        <h3>Riverside Tent</h3>
+        <p>Tenda nyaman untuk 4 orang, dengan pemandangan langsung ke arah sungai.</p>
+        <div class="room-amenities">
+          <span class="amenity">4 orang</span><span class="amenity">4 single bed</span>
+          <span class="amenity">Kamar mandi terpisah</span><span class="amenity">Sarapan</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price"><strong>400.000</strong> / malam (starts from)</div>
+          <a href="booking.html" class="btn btn-primary" style="padding:8px 18px;font-size:13px;">Pesan</a>
+        </div>
+      </div>
+    </div>
+	<div class="card" data-fade>
+      <div class="room-img" style="background:#e8dcc8;"><div class="room-tag"></div></div>
+      <div class="room-body">
+        <h3>Cascading Riverside Tent</h3>
+        <p>Tenda nyaman untuk 4 orang, dengan pemandangan langsung ke arah sungai tepat di depan jeram.</p>
+        <div class="room-amenities">
+          <span class="amenity">4 orang</span><span class="amenity">4 single bed</span>
+          <span class="amenity">Kamar mandi terpisah</span><span class="amenity">Sarapan</span>
+        </div>
+        <div class="room-footer">
+          <div class="room-price"><strong>500.000</strong> / malam (starts from)</div>
+          <a href="booking.html" class="btn btn-primary" style="padding:8px 18px;font-size:13px;">Pesan</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="section activities" id="aktivitas">
+  <div class="section-label">Aktivitas</div>
+  <h2 class="section-title">Ada banyak hal untuk dinikmati</h2>
+  <p class="section-desc">Lebih dari sekadar menginap — temukan pengalaman yang akan kamu ceritakan bertahun-tahun.</p>
+  <div class="act-grid">
+    <div class="act-card" data-fade>
+      <div class="act-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7aaa58" stroke-width="1.8" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <h4>Trekking pagi</h4><p>Jelajahi jalur hiking di tengah hutan pinus.</p>
+    </div>
+    <div class="act-card" data-fade>
+      <div class="act-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7aaa58" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/></svg></div>
+      <h4>Sunrise watching</h4><p>Saksikan fajar di atas hamparan awan.</p>
+    </div>
+    <div class="act-card" data-fade>
+      <div class="act-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7aaa58" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="14" r="3"/></svg></div>
+      <h4>Bonfire malam</h4><p>Api unggun dengan jagung bakar.</p>
+    </div>
+    <div class="act-card" data-fade>
+      <div class="act-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7aaa58" stroke-width="1.8" stroke-linecap="round"><path d="M18 3a3 3 0 00-3 3v12a3 3 0 003 3 3 3 0 003-3 3 3 0 00-3-3H6a3 3 0 00-3 3 3 3 0 003 3 3 3 0 003-3V6a3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3h12a3 3 0 003-3 3 3 0 00-3-3z"/></svg></div>
+      <h4>Stargazing</h4><p>Langit malam Pangalengan — planetarium alami.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials">
+  <div class="text-center" style="margin-bottom:0;">
+    <div class="section-label" style="justify-content:center;">Testimoni</div>
+    <h2 class="section-title">Kata mereka yang sudah merasakan</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card" data-fade>
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Tidur dengan suara hujan di atas tenda, bangun dengan udara segar — tidak ada gangguan HP, tidak ada kebisingan kota."</p>
+      <div class="testi-author"><div class="testi-avatar">RA</div><div><div class="testi-name">Rafi Ananda</div><div class="testi-from">Bandung · Mei 2025</div></div></div>
+    </div>
+    <div class="testi-card" data-fade>
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Kami datang berlima untuk ulang tahun teman. Suasana campnya luar biasa, stafnya ramah banget!"</p>
+      <div class="testi-author"><div class="testi-avatar">DN</div><div><div class="testi-name">Dina Novita</div><div class="testi-from">Jakarta · April 2025</div></div></div>
+    </div>
+    <div class="testi-card" data-fade>
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">"Bawa keluarga dengan 2 anak kecil — anak-anak tidak mau pulang! Bersih, aman, dan sarapannya enak."</p>
+      <div class="testi-author"><div class="testi-avatar">YP</div><div><div class="testi-name">Yoga Pratama</div><div class="testi-from">Bekasi · Maret 2025</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing" id="paket" style="padding-left: 0; padding-right: 0; overflow: hidden;">
+  <div class="text-center" style="margin-bottom:0; padding: 0 5vw;">
+    <div class="section-label" style="justify-content:center;">Paket Tambahan</div>
+    <h2 class="section-title">Sesuaikan pengalaman glampingmu</h2>
+    <p class="section-desc" style="margin:0 auto;">Geser untuk melihat opsi lainnya</p>
+  </div>
+	<div id="pricing-scroll-addon" style="margin-top: 3rem;">
+    <div class="carousel-spacer"></div>
+	
+      <div class="price-card" data-pkg="Kambing Guling">
+      <div class="price-name">Kambing Guling</div>
+      <div class="price-desc">Spesial untuk rombongan</div>
+      <div class="price-num">2,0jt<span class="price-per"> / ekor (starts from)</span></div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>Lontong / Nasi</li>
+		<li>Bumbu Kecap</li>
+        <li>Sop / Gule Jeroan</li>
+        <li>Alat Makan</li>
+      </ul>
+     </div>
+
+    <div class="price-card" data-pkg="Liwetan Sunda">
+      <div class="price-pop-label">Paling populer</div>
+      <div class="price-name">Liwetan Tradisional</div>
+      <div class="price-desc"></div>
+      <div class="price-num">35rb<span class="price-per"> / pax (starts from)</span></div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>Nasi putih / Nasi liwet</li>
+        <li>Pilihan lauk ayam / ikan</li>
+		<li>Lauk tahu &amp; tempe</li>
+        <li>Lalapan &amp; sambal</li>
+        <li>Kerupuk</li>
+		<li>Minuman ringan</li>
+      </ul>
+     </div>
+		
+	<div class="price-card" data-pkg="Rafting Sungai">
+	  <div class="price-pop-label">Iconic</div>
+      <div class="price-name">Rafting Sungai Palayangan</div>
+      <div class="price-desc">Icon Wisata Pangalengan</div>
+      <div class="price-num">150rb<span class="price-per"> / orang</span></div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>Guide Rafting</li>
+        <li>Briefing</li>
+        <li>Safety Equipment</li>
+		<li>Helper</li>
+		<li>Dokumentasi</li>
+      </ul>
+    </div>
+
+    <div class="price-card" data-pkg="Prasmanan">
+      <div class="price-name">Prasmanan Internasional</div>
+      <div class="price-desc">Minimum 20 pax</div>
+      <div class="price-num">30rb<span class="price-per"> / pax (starts from)</span></div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>Nasi putih / Nasi goreng</li>
+        <li>Pilihan lauk ayam / daging</li>
+        <li>Sayuran</li>
+        <li>Buah potong</li>
+        <li>Koordinasi event tersedia</li>
+      </ul>
+    </div>
+	
+	<div class="price-card" data-pkg="BBQ Grill Set">
+      <div class="price-name">BBQ Grill Set</div>
+      <div class="price-desc">Peralatan &amp; bahan siap panggang</div>
+      <div class="price-num">150rb<span class="price-per"> / set</span></div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>Panggangan &amp; Arang</li>
+        <li>Daging Slice &amp; Sosis</li>
+        <li>Saus BBQ &amp; Alat Capitan</li>
+      </ul>
+    </div>
+	
+	<div class="carousel-spacer"></div>
+  </div>
+
+  <!-- Tombol CTA Utama -->
+  <div style="text-align: center; margin-top: 40px; padding: 0 5vw;" data-fade>
+      <a href="#" onclick="pesanPaket(); return false;" class="btn btn-wa" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;font-size:15px;box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.05-1.36C8.44 21.51 10.18 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+  Pesan Paket Tambahan via WhatsApp
+</a>    
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq" id="faq">
+  <div class="faq-layout">
+    <div>
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title" style="margin-bottom:2rem;">Pertanyaan yang sering ditanyakan</h2>
+      <div class="faq-list">
+
+        <div class="faq-item open">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Berapa jauh dari pusat kota Bandung?
+            <div class="faq-arrow"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#5a3820" stroke-width="2" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div>
+          </button>
+          <div class="faq-a">Cascade Cabin &amp; Camp berjarak sekitar 60–70 km dari pusat Bandung, atau sekitar 1,5–2 jam perjalanan dengan kendaraan pribadi melewati jalur Soreang–Pangalengan.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah perlu membawa perlengkapan camping sendiri?
+            <div class="faq-arrow"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#5a3820" stroke-width="2" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div>
+          </button>
+          <div class="faq-a">Tidak perlu! Semua perlengkapan dasar (kasur, bantal, selimut tebal, lampu) sudah tersedia. Cukup bawa pakaian hangat karena suhu malam bisa turun hingga 15°C. Bahkan kami menyediakan air minum beserta dispenser air panas gratis.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah ada sinyal internet di lokasi?
+            <div class="faq-arrow"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#5a3820" stroke-width="2" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div>
+          </button>
+          <div class="faq-a">Kami menyediakan jaringan internet dengan WiFi di lokasi. Rekomendasi kami adalah tadabbur dan nikmati alam di sana!</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Bagaimana cara reservasi dan pembayaran?
+            <div class="faq-arrow"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#5a3820" stroke-width="2" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div>
+          </button>
+          <div class="faq-a">Reservasi lewat form online atau WhatsApp. Konfirmasi booking dengan DP 50%, dan pelunasan saat check-in. Kami menerima transfer bank dan QRIS.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah ada kebijakan pembatalan?
+            <div class="faq-arrow"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#5a3820" stroke-width="2" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div>
+          </button>
+          <div class="faq-a">Pembatalan lebih dari 3 hari sebelum check-in: DP dikembalikan 50%. Kurang dari 3 hari: DP tidak dapat dikembalikan, namun tanggal bisa digeser sesuai ketersediaan.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah anak-anak dan hewan peliharaan diperbolehkan?
+            <div class="faq-arrow"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="#5a3820" stroke-width="2" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div>
+          </button>
+          <div class="faq-a">Anak-anak sangat disambut! Untuk hewan peliharaan, mohon konfirmasi terlebih dahulu karena ada unit tertentu yang diperbolehkan membawa pets.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div>
+      <div class="faq-cta-box" id="booking-cta">
+        <div style="font-size:40px;margin-bottom:16px;">🏕️</div>
+        <h3>Siap merasakan pengalamannya?</h3>
+        <p>Hubungi kami langsung via WhatsApp untuk cek ketersediaan dan reservasi dengan cepat.</p>
+        <a href="https://wa.me/6281234567890?text=Halo%20Cascade%20Cabin%2C%20saya%20ingin%20informasi%20reservasi" class="btn btn-wa" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:13px 26px;font-size:15px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.05-1.36C8.44 21.51 10.18 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          Chat via WhatsApp
+        </a>
+        <p class="faq-cta-note">Biasanya kami membalas dalam &lt; 1 jam</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-booking" id="booking">
+  <div class="section-label" style="justify-content:center;color:var(--moss-light);">
+    <span style="background:var(--moss-light);height:1.5px;width:20px;display:block;"></span>
+    Reservasi sekarang
+  </div>
+  <h2 data-fade>Siap merasakan pengalamannya?</h2>
+  <p data-fade>Isi form reservasi online atau hubungi kami langsung via WhatsApp. Konfirmasi dalam kurang dari 1 jam.</p>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;" data-fade>
+    <a href="booking.html" class="btn btn-primary" style="padding:14px 32px;font-size:15px;">Form reservasi online</a>
+    <a href="https://wa.me/6281234567890" class="btn btn-wa" target="_blank" style="padding:14px 32px;font-size:15px;">Chat WhatsApp</a>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="section location" id="lokasi">
+  <div class="section-label">Lokasi</div>
+  <h2 class="section-title">Cara menuju ke sini</h2>
+  <p class="section-desc">Pangalengan, Kabupaten Bandung — mudah dijangkau, namun terasa seperti dunia yang berbeda.</p>
+  <div class="loc-grid">
+    <div class="loc-facts">
+      <div class="loc-fact"><div class="loc-fact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7aaa58" stroke-width="1.8" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h5>Alamat</h5><p>Jl. Raya Pangalengan, Kab. Bandung, Jawa Barat</p></div></div>
+      <div class="loc-fact"><div class="loc-fact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7aaa58" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><h5>Dari pusat Bandung</h5><p>±1,5–2 jam dari Pintu tol Soreang</p></div></div>
+      <div class="loc-fact"><div class="loc-fact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7aaa58" stroke-width="1.8" stroke-linecap="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/></svg></div><div><h5>Ketinggian &amp; suhu</h5><p>1.400 mdpl · 15–22°C · Bawa jaket tebal!</p></div></div>
+    </div>
+    
+    <div class="loc-map" style="display: flex; flex-direction: column; gap: 16px;">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.4578047284267!2d107.54869989999999!3d-7.188487899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e689109a68ba60b%3A0xe3c1389262b1e747!2sCascade%20Cabin%20%26%20Camp!5e0!3m2!1sen!2sid!4v1778409697803!5m2!1sen!2sid"
+		width="100%" 
+        height="560" 
+        style="border:0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      
+      <a href="https://maps.app.goo.gl/S8Q5ZTw1eu5kKjFN6" target="_blank" class="btn btn-primary" style="margin:auto; display:inline-flex; align-items:center; gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        Buka di Google Maps
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Cascade <span>Cabin &amp; Camp</span></div>
+      <p>Glamping premium di Pangalengan, Bandung. Tempat di mana kamu bisa benar-benar hadir bersama alam.</p>
+    </div>
+    <div class="footer-col"><h5>Navigasi</h5><ul><li><a href="#kamar">Kamar</a></li><li><a href="#aktivitas">Aktivitas</a></li><li><a href="#paket">Paket Tambahan</a></li><li><a href="#faq">FAQ</a></li><li><a href="booking.html">Reservasi</a></li><li><a href="#lokasi">Lokasi</a></li></ul></div>
+    <div class="footer-col">
+		<h5>Kontak</h5>
+		<ul>
+			<li><a href="https://wa.me/6281234567890">WhatsApp</a></li>
+			<li><a href="mailto:cascade.glamping.cabin@gmail.com">Email</a></li>
+			<li><a href="https://www.instagram.com/cascade.cabincamp/">Instagram</a></li>
+		</ul>
+	  </div>
+    <div class="footer-col">
+		<h5>Info</h5>
+		<ul>
+			<li><a href="#">Check-in 14.00</a></li>
+			<li><a href="#">Check-out 11.00</a></li>
+			<li><a href="#">Sarapan</a></li>
+		</ul>
+	  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Cascade Cabin &amp; Camp — Pangalengan, Bandung</span>
+    <span>cascade-cabin.id</span>
+	<span>PT. Persaudaraan Bani Miskiy</span>
+  </div>
+</footer>
+
+<!-- Shared script — dimuat terakhir -->
+<script src="assets/js/script.js"></script>
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
