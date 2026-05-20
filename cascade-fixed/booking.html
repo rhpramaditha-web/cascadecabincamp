@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Reservasi glamping Cascade Cabin & Camp — Pangalengan, Bandung.">
+<title>Reservasi — Cascade Cabin &amp; Camp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cabin:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/booking.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <a href="index.html" class="logo">
+	  <img src="assets/img/logoHitam.png" alt="Cascade Cabin & Camp" style="height: 150px; width: auto; object-fit: contain;">
+  </a>
+  <a href="index.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 4l-4 4 4 4"/></svg>
+    Kembali ke website
+  </a>
+</header>
+
+<!-- HERO BANNER -->
+<div class="form-hero">
+  <div class="eyebrow">Formulir reservasi</div>
+  <h1>Pesan kamar impianmu<br>di Pangalengan</h1>
+  <p>Isi formulir di bawah. Booking dikonfirmasi setelah DP 50% diterima — kami akan menghubungimu via WhatsApp.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">Check-in 14.00</span>
+    <span class="hero-pill">Check-out 11.00</span>
+    <span class="hero-pill">Sarapan inklusif</span>
+      </div>
+</div>
+
+<!-- FORM BODY -->
+<div class="form-body">
+  <div class="form-main">
+
+    <!-- PROGRESS -->
+    <div class="progress-track">
+      <div class="step-dot active" id="dot-1"><span>1</span></div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step-dot" id="dot-2"><span>2</span></div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step-dot" id="dot-3"><span>3</span></div>
+      <div class="step-line" id="line-3"></div>
+      <div class="step-dot" id="dot-4"><span>4</span></div>
+    </div>
+    <div class="step-label-row">
+      <div class="step-label active" id="lbl-1">Tanggal</div>
+      <div class="step-label" id="lbl-2">Kamar</div>
+      <div class="step-label" id="lbl-3">Data tamu</div>
+      <div class="step-label" id="lbl-4">Konfirmasi</div>
+    </div>
+
+    <!-- STEP 1: TANGGAL -->
+    <div class="form-section active" id="section-1">
+      <h2 class="section-title-sm">Pilih tanggal menginap</h2>
+      <p class="section-desc-sm">Pilih tanggal check-in dan check-out. Durasi minimal 1 malam.</p>
+
+      <div class="field-row cols-2">
+        <div class="form-field">
+          <label class="form-label">Tanggal check-in <span class="req">*</span></label>
+          <input type="date" class="form-input" id="checkin" required>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Check-in mulai pukul 14.00 WIB</div>
+          <div class="form-error" id="err-checkin">Pilih tanggal check-in</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Tanggal check-out <span class="req">*</span></label>
+          <input type="date" class="form-input" id="checkout" required>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Check-out paling lambat 11.00 WIB</div>
+          <div class="form-error" id="err-checkout">Check-out harus setelah check-in</div>
+        </div>
+      </div>
+
+      <div class="form-field" style="margin-bottom:16px;">
+        <label class="form-label">Jumlah tamu <span class="req">*</span></label>
+        <div class="counter-wrap">
+          <button class="counter-btn" onclick="changeGuest(-1)" type="button">−</button>
+          <div class="counter-num" id="guest-num">2</div>
+          <button class="counter-btn" onclick="changeGuest(1)" type="button">+</button>
+          <span style="font-size:13px;color:var(--text-muted);margin-left:4px;">orang</span>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <div></div>
+        <button class="btn-next" onclick="goTo(2)" type="button">
+          Pilih kamar
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: KAMAR & PAKET -->
+    <div class="form-section" id="section-2">
+      <h2 class="section-title-sm">Pilih tipe kamar</h2>
+      <p class="section-desc-sm">Pilih tipe akomodasi yang kamu inginkan.</p>
+
+      <div class="unit-grid">
+        <div class="unit-card" id="unit-cabin" onclick="selectUnit('cabin')">
+          <div class="unit-icon">🏕️</div>
+          <div class="unit-name">Forest Tent</div>
+          <div class="unit-cap">Maks 4 orang</div>
+          <div class="unit-price" id="price-cabin"></div>
+        </div>
+        <div class="unit-card" id="unit-tent" onclick="selectUnit('tent')">
+          <div class="unit-tag">Terlaris</div>
+		  <div class="unit-icon">⛺</div>
+          <div class="unit-name">Riverside Tent</div>
+          <div class="unit-cap">Maks 4 orang</div>
+          <div class="unit-price" id="price-tent"></div>
+        </div>
+        <div class="unit-card" id="unit-lodge" onclick="selectUnit('lodge')">
+          <div class="unit-icon">🏠</div>
+          <div class="unit-name">Riverside Glamping</div>
+          <div class="unit-cap">Maks 4 orang</div>
+          <div class="unit-price" id="price-lodge"></div>
+        </div>
+		<div class="unit-card" id="unit-cascading" onclick="selectUnit('cascading')">
+          <div class="unit-icon">⛺</div>
+          <div class="unit-name">Cascading Riverside Tent</div>
+          <div class="unit-cap">Maks 4 orang</div>
+          <div class="unit-price" id="price-cascading"></div>
+        </div>
+      </div>
+      <div class="form-error" id="err-unit" style="margin-bottom:12px;">Pilih tipe kamar terlebih dahulu</div>
+
+      <div class="form-nav">
+        <button class="btn-back" onclick="goTo(1)" type="button">← Kembali</button>
+        <button class="btn-next" onclick="goTo(3)" type="button">
+          Data tamu
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: DATA TAMU -->
+    <div class="form-section" id="section-3">
+      <h2 class="section-title-sm">Data diri tamu</h2>
+      <p class="section-desc-sm">Isi dengan data yang aktif. Konfirmasi booking akan dikirim via WhatsApp.</p>
+
+      <div class="field-row cols-2">
+        <div class="form-field">
+          <label class="form-label">Nama lengkap <span class="req">*</span></label>
+          <input type="text" class="form-input" id="nama" placeholder="Nama sesuai KTP">
+          <div class="form-error" id="err-nama">Nama tidak boleh kosong</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Nomor WhatsApp <span class="req">*</span></label>
+          <input type="tel" class="form-input" id="wa" placeholder="08xxxxxxxxxx">
+          <div class="form-error" id="err-wa">Nomor WhatsApp tidak valid</div>
+        </div>
+      </div>
+
+      <div class="field-row cols-2">
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="email" placeholder="email@contoh.com">
+          <div class="form-error" id="err-email">Format email tidak valid</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Kota asal <span class="req">*</span></label>
+          <input type="text" class="form-input" id="kota" placeholder="Jakarta, Depok, dll.">
+          <div class="form-error" id="err-kota">Kota asal tidak boleh kosong</div>
+        </div>
+      </div>
+
+      <div class="form-field" style="margin-bottom:16px;">
+        <label class="form-label">Permintaan khusus</label>
+        <div class="chip-group" id="chips">
+          <div class="chip" onclick="toggleChip(this)">Extra selimut</div>
+          <div class="chip" onclick="toggleChip(this)">Porter barang dari parkiran</div>
+        </div>
+      </div>
+
+      <div class="form-field" style="margin-bottom:16px;">
+        <label class="form-label">Catatan tambahan</label>
+        <textarea class="form-textarea" id="catatan" placeholder="Alergi makanan, waktu tiba, atau hal lain yang perlu kami tahu..."></textarea>
+      </div>
+
+      <div class="form-field" style="margin-bottom:16px;">
+        <label class="form-label">Dari mana kamu tahu Cascade? <span class="req">*</span></label>
+        <select class="form-select" id="sumber">
+          <option value="">— Pilih sumber —</option>
+          <option>Instagram</option>
+          <option>Google Maps</option>
+          <option>TikTok</option>
+          <option>Rekomendasi teman</option>
+          <option>Website kami</option>
+          <option>Lainnya</option>
+        </select>
+        <div class="form-error" id="err-sumber">Pilih salah satu</div>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-back" onclick="goTo(2)" type="button">← Kembali</button>
+        <button class="btn-next" onclick="goTo(4)" type="button">
+          Review &amp; kirim
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4: KONFIRMASI -->
+    <div class="form-section" id="section-4">
+      <h2 class="section-title-sm">Review pesanan</h2>
+      <p class="section-desc-sm">Pastikan semua data sudah benar sebelum mengirim.</p>
+
+      <div style="background:var(--white);border-radius:14px;border:1px solid rgba(139,96,64,0.12);padding:20px 24px;margin-bottom:20px;">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:14px;font-weight:500;">Ringkasan booking</div>
+        <div id="review-content" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
+
+      <div style="background:rgba(78,112,56,0.06);border:1.5px solid rgba(78,112,56,0.18);border-radius:12px;padding:16px 20px;margin-bottom:28px;">
+        <div style="font-size:13px;font-weight:500;color:var(--moss-dark);margin-bottom:6px;">Syarat &amp; ketentuan</div>
+        <div style="font-size:12px;color:var(--text-soft);line-height:1.7;">DP 50% wajib dibayar dalam 24 jam setelah konfirmasi. Pembatalan &gt; 3 hari: DP kembali 50%. Pembatalan &lt; 3 hari: DP hangus, namun tanggal dapat digeser. Dengan mengirim formulir ini, kamu menyetujui syarat tersebut.</div>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-back" onclick="goTo(3)" type="button">← Kembali</button>
+        <button class="btn-submit" id="btn-submit" onclick="submitForm()" type="button">
+          <div class="spinner"></div>
+          <span class="btn-label">Kirim reservasi</span>
+          <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2L2 8l5 2 2 5 5-13z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+          <circle cx="20" cy="20" r="18" stroke="#4e7038" stroke-width="2"/>
+          <path d="M12 20l6 6 10-12" stroke="#4e7038" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>Reservasi terkirim!</h2>
+      <p>Terima kasih, <strong id="success-nama"></strong>. Tim kami akan menghubungimu via WhatsApp dalam 1 jam untuk konfirmasi dan informasi pembayaran DP.</p>
+      <div class="success-id">
+        ID Booking kamu
+        <strong id="success-id-val"></strong>
+      </div>
+      <br>
+      <a id="wa-link" href="#" class="btn btn-wa" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:13px 28px;font-size:15px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.06L2 22l5.05-1.36C8.44 21.51 10.18 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+        Chat konfirmasi via WhatsApp
+      </a>
+      <div style="margin-top:20px;">
+        <a href="index.html" class="btn btn-secondary">← Kembali ke website</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR SUMMARY -->
+  <div class="form-sidebar">
+    <div class="summary-card">
+      <div class="summary-head">
+        <h3>Ringkasan pesanan</h3>
+        <p>Diperbarui otomatis</p>
+      </div>
+      <div class="summary-body">
+        <div class="summary-row"><div class="sum-label">Check-in</div><div class="sum-value muted" id="sum-checkin">—</div></div>
+        <div class="summary-row"><div class="sum-label">Check-out</div><div class="sum-value muted" id="sum-checkout">—</div></div>
+        <div class="summary-row"><div class="sum-label">Durasi</div><div class="sum-value muted" id="sum-durasi">—</div></div>
+        <div class="summary-row"><div class="sum-label">Jumlah tamu</div><div class="sum-value muted" id="sum-tamu">2 orang</div></div>
+        <div class="sum-divider"></div>
+        <div class="summary-row"><div class="sum-label">Tipe kamar</div><div class="sum-value muted" id="sum-kamar">—</div></div>
+        <div class="summary-row"><div class="sum-label">Paket</div><div class="sum-value muted" id="sum-paket">—</div></div>
+        <div class="summary-row"><div class="sum-label">Harga / malam</div><div class="sum-value" id="sum-harga">—</div></div>
+        <div class="sum-total">
+          <div class="sum-total-label">Estimasi total</div>
+          <div class="sum-total-amount" id="sum-total">—</div>
+        </div>
+        <div class="sum-note">DP 50% = <strong id="sum-dp">—</strong></div>
+        <div class="sum-info">
+          <div class="sum-info-item"><div class="sum-info-dot"></div>Konfirmasi via WhatsApp &lt; 1 jam</div>
+          <div class="sum-info-item"><div class="sum-info-dot"></div>DP 50% dalam 24 jam pasca konfirmasi</div>
+          <div class="sum-info-item"><div class="sum-info-dot"></div>Sisa bayar saat check-in</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- script.js DULU (berisi CONFIG & helpers), booking.js SESUDAHNYA -->
+<script src="assets/js/script.js"></script>
+<script src="assets/js/booking.js"></script>
+</body>
+</html>
