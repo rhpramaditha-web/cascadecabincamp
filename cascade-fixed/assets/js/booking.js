@@ -11,6 +11,21 @@ const UNIT_LIMITS = {
   'lodge': 5       // Riverside Glamping (RG)
 };
 
+// ✅ UNIT TO INITIAL MAPPING (SELARAS DENGAN ADMIN)
+const unitToInitial = {
+  'cabin': 'FT',
+  'tent': 'RT',
+  'lodge': 'RG',
+  'cascading': 'CRT'
+};
+
+const unitToName = {
+  'cabin': 'Forest Tent',
+  'tent': 'Riverside Tent',
+  'lodge': 'Riverside Glamping',
+  'cascading': 'Cascading Riverside Tent'
+};
+
 // -- STATE -------------------------------------------------
 const state = {
   step: 1,
@@ -48,6 +63,18 @@ function attachAddonListeners() {
       el.addEventListener('change', updateSummary);
     }
   });
+}
+
+// ✅ BOOKING ID GENERATOR - Format MMDD-#### (SELARAS ADMIN)
+function generateBookingId(checkinDate) {
+  const d = new Date(checkinDate + 'T00:00:00');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  
+  // Generate 4 digit counter dari timestamp
+  const counter = String(Date.now() % 10000).padStart(4, '0');
+  
+  return `${mm}${dd}-${counter}`;
 }
 
 function initUnitPrices() {
@@ -133,17 +160,16 @@ function updateSummary() {
     const el = document.getElementById(id); 
     if (el) el.textContent = val; 
   };
-  const unitNames = { cabin: 'Forest Tent', tent: 'Riverside Tent', lodge: 'Riverside Glamping', cascading: 'Cascading Riverside Tent' };
 
   setText('sum-checkin',  fmtDate(state.checkin)  || '—');
   setText('sum-checkout', fmtDate(state.checkout) || '—');
   setText('sum-durasi',   state.durasi ? state.durasi + ' malam' : '—');
   setText('sum-tamu',     state.guests + ' orang');
-  setText('sum-kamar',    state.unit ? unitNames[state.unit] : '—');
+  setText('sum-kamar',    state.unit ? unitToName[state.unit] : '—');
 
   if (state.unit && state.durasi > 0) {
     const { wd, we } = countNights(state.checkin, state.checkout);
-    const priceCfg = CONFIG.prices[unitNames[state.unit]];
+    const priceCfg = CONFIG.prices[unitToName[state.unit]];
     const baseTotal = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
     
 	// -- LOGIKA KALKULASI PAKET TAMBAHAN (ADD-ON) --
@@ -406,10 +432,8 @@ async function goTo(n) {
 
 // -- REVIEW ------------------------------------------------
 function buildReview() {
-  const unitNames = { cabin: 'Forest Tent', tent: 'Riverside Tent', lodge: 'Riverside Glamping', cascading: 'Cascading Riverside Tent' };
-  
   const { wd, we } = countNights(state.checkin, state.checkout);
-  const priceCfg = CONFIG.prices[unitNames[state.unit]];
+  const priceCfg = CONFIG.prices[unitToName[state.unit]];
   const baseTotal = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
 
   const rows = [
@@ -417,7 +441,7 @@ function buildReview() {
     ['Check-out', fmtDate(state.checkout)],
     ['Durasi', state.durasi + ' malam'],
     ['Jumlah tamu', state.guests + ' orang'],
-    ['Tipe kamar', unitNames[state.unit]],
+    ['Tipe kamar', unitToName[state.unit]],
     ['Rincian Malam', state.pkgDinamis],
     ['Harga kamar', fmtRupiah(baseTotal)],
   ];
@@ -447,18 +471,18 @@ function buildReview() {
     </div>`).join('');
 }
 
-// -- SUBMIT ------------------------------------------------
+// -- SUBMIT (SELARAS DENGAN ADMIN) ------------------------------------------------
 async function submitForm() {
   const btn = document.getElementById('btn-submit');
   if (!btn) return;
   btn.classList.add('loading');
   btn.disabled = true;
 
-  const unitNames = { cabin: 'Forest Tent', tent: 'Riverside Tent', lodge: 'Riverside Glamping', cascading: 'Cascading Riverside Tent' };
-  const bookingId = generateBookingId();
+  // ✅ GUNAKAN FORMAT YANG SELARAS DENGAN ADMIN
+  const bookingId = generateBookingId(state.checkin);  // ← Format MMDD-####
   
   const { wd, we } = countNights(state.checkin, state.checkout);
-  const priceCfg = CONFIG.prices[unitNames[state.unit]];
+  const priceCfg = CONFIG.prices[unitToName[state.unit]];
   const baseTotal = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
 
   const payload = {
@@ -473,7 +497,7 @@ async function submitForm() {
       checkout: state.checkout, 
       durasi: state.durasi,
       guests: state.guests,
-      unit: unitNames[state.unit], 
+      unit: unitToInitial[state.unit],  // ✅ KIRIM INISIAL (FT, RT, RG, CRT)
       pkg: state.pkgDinamis,
       harga: baseTotal,
       addons: state.addons,
