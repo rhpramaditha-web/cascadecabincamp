@@ -1,5 +1,5 @@
 /* ============================================================
-   CASCADE CABIN & CAMP — Booking Form JavaScript (PUBLIC WEB)
+   CASCADE CABIN & CAMP â€” Booking Form JavaScript (PUBLIC WEB)
    100% SELARAS DENGAN DASHBOARD ADMIN
    ============================================================ */
 
@@ -19,6 +19,8 @@ const state = {
   unit: '', pkgDinamis: '',
   nama: '', wa: '', email: '', kota: '',
   catatan: '', chips: [], sumber: '',
+  addons: {}, // Simpan data addon
+  finalTotal: 0, // Total harga termasuk addon
 };
 
 // -- INIT --------------------------------------------------
@@ -29,9 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if(inEl) inEl.min = today;
   if(outEl) outEl.min = today;
   
+  // âœ… ATTACH EVENT LISTENER KE SEMUA ADDON INPUT
+  attachAddonListeners();
+  
   initUnitPrices();
   updateSummary();
 });
+
+// âœ… FUNGSI BARU: Attach listener ke semua addon input
+function attachAddonListeners() {
+  const addonIds = ['qty-bbq', 'qty-kambing', 'qty-liwet', 'qty-prasmanan', 'qty-rafting', 'qty-game'];
+  addonIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', updateSummary);
+      el.addEventListener('change', updateSummary);
+    }
+  });
+}
 
 function initUnitPrices() {
   const el = (id) => document.getElementById(id);
@@ -106,21 +123,28 @@ function selectUnit(id) {
 // -- CHIP TOGGLE -------------------------------------------
 function toggleChip(el) { el.classList.toggle('selected'); }
 
-// -- SUMMARY UPDATE ----------------------------------------
+// -- SUMMARY UPDATE (DIPERBAIKI) ----------------------------------------
 function updateSummary() {
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  const setHtml = (id, val) => { 
+    const el = document.getElementById(id); 
+    if (el) el.innerHTML = val; 
+  };
+  const setText = (id, val) => { 
+    const el = document.getElementById(id); 
+    if (el) el.textContent = val; 
+  };
   const unitNames = { cabin: 'Forest Tent', tent: 'Riverside Tent', lodge: 'Riverside Glamping', cascading: 'Cascading Riverside Tent' };
 
-  set('sum-checkin',  fmtDate(state.checkin)  || '—');
-  set('sum-checkout', fmtDate(state.checkout) || '—');
-  set('sum-durasi',   state.durasi ? state.durasi + ' malam' : '—');
-  set('sum-tamu',     state.guests + ' orang');
-  set('sum-kamar',    state.unit ? unitNames[state.unit] : '—');
+  setText('sum-checkin',  fmtDate(state.checkin)  || 'â€”');
+  setText('sum-checkout', fmtDate(state.checkout) || 'â€”');
+  setText('sum-durasi',   state.durasi ? state.durasi + ' malam' : 'â€”');
+  setText('sum-tamu',     state.guests + ' orang');
+  setText('sum-kamar',    state.unit ? unitNames[state.unit] : 'â€”');
 
   if (state.unit && state.durasi > 0) {
     const { wd, we } = countNights(state.checkin, state.checkout);
     const priceCfg = CONFIG.prices[unitNames[state.unit]];
-    const total = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
+    const baseTotal = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
     
 	// -- LOGIKA KALKULASI PAKET TAMBAHAN (ADD-ON) --
     let extraCost = 0;
@@ -136,55 +160,67 @@ function updateSummary() {
     const qtyRafting = getQty('qty-rafting');
     const qtyGame = getQty('qty-game');
 
+    // SIMPAN KE STATE
+    state.addons = {
+      bbq: qtyBbq,
+      kambing: qtyKambing,
+      liwet: qtyLiwet,
+      prasmanan: qtyPrasmanan,
+      rafting: qtyRafting,
+      game: qtyGame
+    };
+
     if (qtyBbq > 0) {
         extraCost += (qtyBbq * 150000);
-        chosenAddons.push(`${qtyBbq}x BBQ Grill`);
+        chosenAddons.push(`${qtyBbq}x BBQ Grill (${fmtRupiah(qtyBbq * 150000)})`);
     }
     if (qtyKambing > 0) {
         extraCost += (qtyKambing * 2000000);
-        chosenAddons.push(`${qtyKambing}x Kambing Guling`);
+        chosenAddons.push(`${qtyKambing}x Kambing Guling (${fmtRupiah(qtyKambing * 2000000)})`);
     }
     if (qtyLiwet > 0) {
         extraCost += (qtyLiwet * 35000);
-        chosenAddons.push(`${qtyLiwet}pax Liwetan`);
+        chosenAddons.push(`${qtyLiwet}pax Liwetan (${fmtRupiah(qtyLiwet * 35000)})`);
     }
     if (qtyPrasmanan > 0) {
         extraCost += (qtyPrasmanan * 30000);
-        chosenAddons.push(`${qtyPrasmanan}pax Prasmanan`);
+        chosenAddons.push(`${qtyPrasmanan}pax Prasmanan (${fmtRupiah(qtyPrasmanan * 30000)})`);
     }
     if (qtyRafting > 0) {
         extraCost += (qtyRafting * 150000);
-        chosenAddons.push(`${qtyRafting}org Rafting`);
+        chosenAddons.push(`${qtyRafting}org Rafting (${fmtRupiah(qtyRafting * 150000)})`);
     }
     if (qtyGame > 0) {
         extraCost += (qtyGame * 35000);
-        chosenAddons.push(`${qtyGame}org Fun Game`);
+        chosenAddons.push(`${qtyGame}org Fun Game (${fmtRupiah(qtyGame * 35000)})`);
     }
 
-    const finalTotal = total + extraCost;
+    // TOTAL AKHIR (KAMAR + ADDON)
+    const finalTotal = baseTotal + extraCost;
+    state.finalTotal = finalTotal;
     
-    // Simpan ke state untuk dibawa saat disubmit ke Sheets
-    state.finalTotal = finalTotal; 
-    state.addonText = chosenAddons.length ? `[ADDON: ${chosenAddons.join(' | ')}]` : '';
+    // Simpan text addon untuk dikirim ke admin
+    state.addonText = chosenAddons.length ? chosenAddons.join(' | ') : '';
 
-    // Tampilkan ke layar (Sidebar)
-    set('sum-paket', state.pkgDinamis + (chosenAddons.length ? `<br><small style="color:#2e4820;font-weight:600;">+ ${chosenAddons.join(', ')}</small>` : ''));
-    set('sum-harga', 'Sesuai hari');
-    set('sum-total', fmtRupiah(finalTotal));
-    set('sum-dp',    fmtRupiah(Math.round(finalTotal / 2)));  
-	  
+    // Rincian paket malam
     let paketInfo = [];
-    if (wd > 0) paketInfo.push(`${wd} malam Weekday`);
-    if (we > 0) paketInfo.push(`${we} malam Weekend`);
-    
+    if (wd > 0) paketInfo.push(`${wd} malam Weekday @ ${fmtRupiah(priceCfg.Weekday)}`);
+    if (we > 0) paketInfo.push(`${we} malam Weekend @ ${fmtRupiah(priceCfg.Weekend)}`);
     state.pkgDinamis = paketInfo.join(' + ');
 
-    set('sum-paket', state.pkgDinamis);
-    set('sum-harga', 'Sesuai hari');
-    set('sum-total', fmtRupiah(total));
-    set('sum-dp',    fmtRupiah(Math.round(total / 2)));
+    // UPDATE DISPLAY SIDEBAR - âœ… GUNAKAN innerHTML BUKAN textContent
+    let paketDisplay = state.pkgDinamis;
+    if (chosenAddons.length) {
+      paketDisplay += `<br><small style="color:#2e4820;font-weight:600;display:block;margin-top:8px;">Addon:<br>${chosenAddons.join('<br>')}</small>`;
+    }
+    
+    // âœ… GUNAKAN setHtml, BUKAN setText (untuk support HTML)
+    setHtml('sum-paket', paketDisplay);
+    setText('sum-harga', 'Sesuai hari');
+    setText('sum-total', fmtRupiah(finalTotal));
+    setText('sum-dp',    fmtRupiah(Math.round(finalTotal / 2)));
   } else {
-    set('sum-paket', '—'); set('sum-harga', '—'); set('sum-total', '—'); set('sum-dp', '—');
+    setText('sum-paket', 'â€”'); setText('sum-harga', 'â€”'); setText('sum-total', 'â€”'); setText('sum-dp', 'â€”');
   }
 }
 
@@ -245,7 +281,7 @@ async function fetchLiveAvailability() {
       method: 'POST',
       body: JSON.stringify({ 
           action: 'get_availability',
-          checkin: state.checkin, // Kirim tanggal agar server tahu ini High Season atau bukan
+          checkin: state.checkin,
           checkout: state.checkout
       }), 
       headers: { 'Content-Type': 'text/plain' }
@@ -259,7 +295,7 @@ async function fetchLiveAvailability() {
           CONFIG.prices = result.rates; 
       }
       
-      initUnitPrices(); // Render ulang harga di tampilan form
+      initUnitPrices();
       
       // 2. HITUNG SISA UNIT
       const busyData = result.data || [];
@@ -303,11 +339,10 @@ async function fetchLiveAvailability() {
             sisaEl.style.fontWeight = 'bold';
             sisaEl.style.marginTop = '4px';
             sisaEl.style.color = '#4e7038';
-            priceEl.parentNode.insertBefore(sisaEl, priceEl); // Taruh info sisa di atas Harga
+            priceEl.parentNode.insertBefore(sisaEl, priceEl);
         }
 
         if (sisa <= 0) {
-          // KONDISI HABIS (SOLD OUT)
           card.classList.add('sold-out', 'disabled');
           card.style.opacity = '0.4';
           card.style.pointerEvents = 'none';
@@ -321,7 +356,6 @@ async function fetchLiveAvailability() {
               state.unit = ''; 
           }
         } else {
-          // KONDISI TERSEDIA
           card.classList.remove('sold-out', 'disabled');
           card.style.opacity = '1';
           card.style.pointerEvents = 'auto';
@@ -331,7 +365,7 @@ async function fetchLiveAvailability() {
         }
       });
       
-      updateSummary(); // Hitung ulang tagihan di Sidebar
+      updateSummary();
     }
   } catch (err) {
     console.error("Gagal sinkronisasi ketersediaan:", err);
@@ -346,7 +380,6 @@ async function fetchLiveAvailability() {
 async function goTo(n) {
   if (n > state.step && !validateStep(state.step)) return;
 
-  // -- CEK KETERSEDIAAN SEBELUM PINDAH KE STEP KAMAR --
   if (n === 2 && state.step === 1) {
     await fetchLiveAvailability();
   }
@@ -377,7 +410,7 @@ function buildReview() {
   
   const { wd, we } = countNights(state.checkin, state.checkout);
   const priceCfg = CONFIG.prices[unitNames[state.unit]];
-  const total = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
+  const baseTotal = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
 
   const rows = [
     ['Check-in', fmtDate(state.checkin)],
@@ -386,13 +419,22 @@ function buildReview() {
     ['Jumlah tamu', state.guests + ' orang'],
     ['Tipe kamar', unitNames[state.unit]],
     ['Rincian Malam', state.pkgDinamis],
-    ['Total Harga', fmtRupiah(total)],
-    ['DP (50%)', fmtRupiah(Math.round(total / 2))],
+    ['Harga kamar', fmtRupiah(baseTotal)],
+  ];
+
+  // TAMBAHKAN ADDON KE REVIEW
+  if (state.addonText) {
+    rows.push(['Paket tambahan', state.addonText]);
+  }
+
+  rows.push(
+    ['Total Harga', fmtRupiah(state.finalTotal)],
+    ['DP (50%)', fmtRupiah(Math.round(state.finalTotal / 2))],
     ['Nama', state.nama],
     ['WhatsApp', state.wa],
     ['Kota asal', state.kota],
     ['Sumber', state.sumber],
-  ];
+  );
 
   if (state.chips.length) rows.push(['Permintaan', state.chips.join(', ')]);
   if (state.catatan)      rows.push(['Catatan', state.catatan]);
@@ -405,7 +447,7 @@ function buildReview() {
     </div>`).join('');
 }
 
-// -- SUBMIT (PAYLOAD DISAMAKAN DENGAN DASHBOARD ADMIN) ---
+// -- SUBMIT ------------------------------------------------
 async function submitForm() {
   const btn = document.getElementById('btn-submit');
   if (!btn) return;
@@ -417,9 +459,8 @@ async function submitForm() {
   
   const { wd, we } = countNights(state.checkin, state.checkout);
   const priceCfg = CONFIG.prices[unitNames[state.unit]];
-  const total = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
+  const baseTotal = (wd * priceCfg.Weekday) + (we * priceCfg.Weekend);
 
-  // Struktur payload yang dipahami Admin Backend
   const payload = {
     action: 'add_booking',
     booking: {
@@ -434,9 +475,11 @@ async function submitForm() {
       guests: state.guests,
       unit: unitNames[state.unit], 
       pkg: state.pkgDinamis,
-      harga: total, 
-      total: total, 
-      dp: Math.round(total / 2),
+      harga: baseTotal,
+      addons: state.addons,
+      addonText: state.addonText,
+      total: state.finalTotal,
+      dp: Math.round(state.finalTotal / 2),
       stBayar: 'Belum',
       stTamu: 'Konfirmasi',
       sumber: state.sumber, 
@@ -448,7 +491,6 @@ async function submitForm() {
     }
   };
 
-  // SUBMIT KE GOOGLE SHEETS
   if (CONFIG.sheetsUrl && CONFIG.sheetsUrl.indexOf('script.google.com') !== -1) {
     try {
       const res = await fetch(CONFIG.sheetsUrl, {
@@ -459,22 +501,18 @@ async function submitForm() {
       
       const result = await res.json();
       
-      // Jika Apps Script menolak (misal: keduluan orang lain / double booking)
       if (!result.success) {
         throw new Error(result.message || 'Gagal menyimpan data ke sistem admin');
       }
     } catch (err) {
       console.warn('Gagal kirim ke Sheets:', err);
       showToast('Booking gagal: ' + err.message, 'error');
-      
-      // MENCEGAH SUCCESS PALSU: Hentikan fungsi di sini dan kembalikan tombol ke semula
       btn.classList.remove('loading');
       btn.disabled = false;
       return; 
     }
   }
 
-  // --- KODE DI BAWAH INI HANYA JALAN JIKA BERHASIL (SUCCESS ASLI) ---
   await new Promise(r => setTimeout(r, 1000));
   btn.classList.remove('loading');
 
@@ -483,9 +521,7 @@ async function submitForm() {
   document.getElementById('success-nama').textContent = state.nama;
   document.getElementById('success-id-val').textContent = bookingId;
 
-  // ... (biarkan sisa kode pembuat link WA tetap ada di bawahnya) ...
-
-  const waMsg = `Halo Cascade Cabin! ???\n\nSaya baru mengisi form booking:\nID: *${bookingId}*\nNama: ${state.nama}\nCheck-in: ${fmtDate(state.checkin)}\nCheck-out: ${fmtDate(state.checkout)}\nUnit: ${unitNames[state.unit]}\nTotal: ${fmtRupiah(total)}\n\nMohon konfirmasi ketersediaannya. Terima kasih!`;
+  const waMsg = `Halo Cascade Cabin! ðŸ‘‹\n\nSaya baru mengisi form booking:\nID: *${bookingId}*\nNama: ${state.nama}\nCheck-in: ${fmtDate(state.checkin)}\nCheck-out: ${fmtDate(state.checkout)}\nTotal: ${fmtRupiah(state.finalTotal)}\n\nTerima kasih!`;
   const waEl = document.getElementById('wa-link');
   if (waEl) waEl.href = buildWaLink(CONFIG.waNumber, waMsg);
 
