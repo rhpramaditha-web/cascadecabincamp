@@ -26,6 +26,16 @@ const unitToName = {
   'cascading': 'Cascading Riverside Tent'
 };
 
+// ✅ ADDON PRICE CONFIG (UNTUK KALKULASI & KIRIM KE ADMIN)
+const ADDON_PRICES = {
+  bbq: { name: 'BBQ Grill Set', price: 150000, unit: 'set' },
+  kambing: { name: 'Kambing Guling', price: 2000000, unit: 'ekor' },
+  liwet: { name: 'Liwetan Tradisional', price: 35000, unit: 'pax' },
+  prasmanan: { name: 'Prasmanan Internasional', price: 30000, unit: 'pax' },
+  rafting: { name: 'Rafting S. Palayangan', price: 150000, unit: 'org' },
+  game: { name: 'Team Bonding / Fun Game', price: 35000, unit: 'org' }
+};
+
 // -- STATE -------------------------------------------------
 const state = {
   step: 1,
@@ -75,6 +85,28 @@ function generateBookingId(checkinDate) {
   const counter = String(Date.now() % 10000).padStart(4, '0');
   
   return `${mm}${dd}-${counter}`;
+}
+
+// ✅ FUNGSI BARU: Format addon untuk sheet BookingAddons
+function formatAddonsForSheet() {
+  const addonsArray = [];
+  
+  Object.entries(state.addons).forEach(([key, qty]) => {
+    if (qty > 0) {
+      const addonConfig = ADDON_PRICES[key];
+      addonsArray.push({
+        bookingId: '', // akan diisi setelah booking tersimpan
+        addonName: addonConfig.name,
+        qty: qty,
+        unit: addonConfig.unit,
+        price: addonConfig.price,
+        subtotal: qty * addonConfig.price,
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+  
+  return addonsArray;
 }
 
 function initUnitPrices() {
@@ -471,6 +503,47 @@ function buildReview() {
     </div>`).join('');
 }
 
+// ✅ FUNGSI BARU: Submit addon ke sheet BookingAddons
+async function submitAddons(bookingId) {
+  const addonsData = formatAddonsForSheet();
+  
+  if (addonsData.length === 0) {
+    // Tidak ada addon, skip
+    return true;
+  }
+
+  // Set bookingId untuk setiap addon
+  addonsData.forEach(a => a.bookingId = bookingId);
+
+  const payload = {
+    action: 'add_booking_addons',
+    addons: addonsData
+  };
+
+  try {
+    const res = await fetch(CONFIG.sheetsUrl, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    
+    const result = await res.json();
+    
+    if (!result.success) {
+      console.warn('⚠️ Warning: Addon tidak tersimpan, tapi booking OK:', result.message);
+      // Jangan error jika addon gagal, booking sudah tersimpan
+      return true;
+    }
+    
+    console.log('✅ Addon berhasil tersimpan ke sheet BookingAddons');
+    return true;
+  } catch (err) {
+    console.warn('⚠️ Warning: Gagal kirim addon ke Sheets:', err);
+    // Jangan error jika addon gagal, booking sudah tersimpan
+    return true;
+  }
+}
+
 // -- SUBMIT (SELARAS DENGAN ADMIN) ------------------------------------------------
 async function submitForm() {
   const btn = document.getElementById('btn-submit');
@@ -479,7 +552,7 @@ async function submitForm() {
   btn.disabled = true;
 
   // ✅ GUNAKAN FORMAT YANG SELARAS DENGAN ADMIN
-  const bookingId = generateBookingId(state.checkin);  // ← Format MMDD-####
+  const bookingId = generateBookingId(state.checkin);
   
   const { wd, we } = countNights(state.checkin, state.checkout);
   const priceCfg = CONFIG.prices[unitToName[state.unit]];
@@ -497,7 +570,7 @@ async function submitForm() {
       checkout: state.checkout, 
       durasi: state.durasi,
       guests: state.guests,
-      unit: unitToInitial[state.unit],  // ✅ KIRIM INISIAL (FT, RT, RG, CRT)
+      unit: unitToInitial[state.unit],
       pkg: state.pkgDinamis,
       harga: baseTotal,
       addons: state.addons,
@@ -536,6 +609,9 @@ async function submitForm() {
       return; 
     }
   }
+
+  // ✅ SETELAH BOOKING BERHASIL, KIRIM ADDON KE SHEET BookingAddons
+  await submitAddons(bookingId);
 
   await new Promise(r => setTimeout(r, 1000));
   btn.classList.remove('loading');
